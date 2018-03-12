@@ -1,8 +1,7 @@
-function [Q,R] = qr_bad(A)
-
 %this routine performs qr factorization using householder matrices
 %it is correct, but highly inefficient. In assignments 1 and 2, cs513 students
 %will examine its inefficiency and will improve it.
+tic
   [m,n]=size(A);               % n is defined as the order of A;
   R=A;                    %the original matrix A is stored
 			  %in order to check at the end
@@ -35,3 +34,5 @@ function [Q,R] = qr_bad(A)
      Q=Q*H; R=H*R;                   % each execution of this line is 2n^3
                                      % operations
   end
+  norm(A-Q*R), norm(eye(m)-Q'*Q)
+  toc
