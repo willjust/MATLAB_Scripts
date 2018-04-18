@@ -19,6 +19,7 @@ for i = 1:m-1
 			U(j,k) = U(j,k) - L(j,i)*U(i,k);
 		end
 	end
+	U(i+1:end,i) = 0;
 end
 
 
