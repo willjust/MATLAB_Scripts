@@ -9,33 +9,34 @@ rp=1:n;cp=1:n;
 % i moves pivot to U(i,i)
 for i = 1:m-1
 	% Find max element in submatrix
-	maxVal = U(i,i); maxCol = i; maxRow = i;
+	maxVal = U(rp(i),cp(i)); maxCol = cp(i); maxRow = rp(i);
 	for j = i:m
 		for k = i:m
-			if U(j,i) > maxVal
-				maxVal = U(j,k);
-				maxRow = j;
-				maxCol = k;
+			if U(j,k) > maxVal
+				maxVal = U(rp(j),cp(k));
+				maxRow = cp(j);
+				maxCol = rp(k);
 			end
 		end
 	end
 	% swap rows
-	tmp = U(i,:); U(i,:)=U(maxRow,:); U(maxRow, :) = tmp;
-	tmp = L(i,:); L(i,:)=L(maxRow,:); L(maxRow, :) = tmp;
+	%tmp = U(i,:); U(i,:)=U(maxRow,:); U(maxRow, :) = tmp;
+	%tmp = L(i,:); L(i,:)=L(maxRow,:); L(maxRow, :) = tmp;
+	tmp = rp(i); rp(i) = rp(maxRow); rp(maxRow) = tmp;
+	
 	% swap columns
 	%tmp = U(:,i); U(:,i)=U(:,maxCol); U(:,maxCol) = tmp;
-	tmp = rp(i); rp(i) = rp(maxRow); rp(maxRow) = tmp;
 	tmp = cp(i); cp(i) = cp(maxCol); cp(maxCol) = tmp;
 	
 	% j moves down m-i square matrix
 	for j = i+1:n
-		L(j,i) = U(j,i)/U(i,i);
+		L(rp(j),i) = U(rp(j),cp(i))/U(rp(i),cp(i));
 		% k updates the rows of the submatrix
 		% since symmetric, k only needs to do j:m instead of i:m as in 
 		% standard LU Factorization. Since only the upper part of the 
 		% symmetric submatrix is computed, the indices (U(j,k) = U(k,j)
 		for k = i:m
-			U(j,k) = U(j,k) - L(j,i)*U(i,k);
+			U(rp(j),cp(k)) = U(rp(j),cp(k)) - L(rp(j),i)*U(rp(i),cp(k));
 		end
 	end
 end
